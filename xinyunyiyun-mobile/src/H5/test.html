@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=750,target-densitydpi=device-dpi,user-scalable=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <title>职场个性自评</title>
+	<link rel="stylesheet" type="text/css" href="css/rest.css"/>
+	<link rel="stylesheet" type="text/css" href="css/swiper.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <script type="text/javascript">
+        var is_low = navigator.userAgent.toLowerCase().indexOf('android') != -1;
+        var _ww = (window.screen.availWidth * (window.devicePixelRatio || 1.5) / 1);
+        if(is_low && _ww < 720) {
+            document.writeln('<meta name="viewport" content="width=750px,target-densitydpi=device-dpi,user-scalable=yes,initial-scale=0.5" />');
+        } else {
+            document.writeln('<meta name="viewport" content="width=750px,target-densitydpi=device-dpi,user-scalable=no" />');
+        }
+    </script>
+    <script type="text/javascript" charset="utf-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/js.js"></script>
+</head>
+
+<body>
+	<div class="answer">
+		<div class="tips">
+			<ul>
+				<li class="red">答题时需要注意以下事项</li>
+				<li>凭第一反应回答，不需要考虑太多</li>
+				<li>题目没有好与坏，对与错之分</li>
+				<li>可能四个描述都符合你，或都不符合，但也要进行选择。</li>
+			</ul>
+		</div>
+	
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				
+				<!-- 第一题 -->
+				<div class="swiper-slide">
+					<div class="L">
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+					</div>
+					<div class="Zj">
+						<div class="txtA">幽默风趣</div>
+						<div class="txtA">严禁精确</div>
+						<div class="txtA">据理力争</div>
+						<div class="txtA">冷静温和</div>
+					</div>
+					<div class="R">
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+					</div>
+				</div>
+				
+				<!-- 第二题 -->
+				<div class="swiper-slide">
+					<div class="L">
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+					</div>
+					<div class="Zj">
+						<div class="txtA">幽默风趣</div>
+						<div class="txtA">严禁精确</div>
+						<div class="txtA">据理力争</div>
+						<div class="txtA">冷静温和</div>
+					</div>
+					<div class="R">
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+					</div>
+				</div>
+				
+				<!-- 第三题 -->
+				<div class="swiper-slide">
+					<div class="L">
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+						<a href="javascript:;">最像我</a>
+					</div>
+					<div class="Zj">
+						<div class="txtA">幽默风趣</div>
+						<div class="txtA">严禁精确</div>
+						<div class="txtA">据理力争</div>
+						<div class="txtA">冷静温和</div>
+					</div>
+					<div class="R">
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+						<a href="javascript:;">不像我</a>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="swiper-pagination"></div>
+		</div>
+		
+		<a href="test_ok.html" class="ok">完成</a>
+	</div>
+	
+	<div class="footer">
+		<a href="javascript:;" class="test" onClick="exit();">保存并退出 <em></em></a>
+	</div>
+	
+	
+	
+	<script src="js/swiper-3.4.2.jquery.min.js" ></script>
+    <!-- Initialize Swiper -->
+    <script>
+		var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+		slidesPerView: 1.14,
+        paginationClickable: true,
+        spaceBetween: 20,
+        centeredSlides: true,
+        paginationType: 'fraction'
+    });
+    </script>
+</body>
+</html>

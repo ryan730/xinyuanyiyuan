@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=750,target-densitydpi=device-dpi,user-scalable=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <title>早期儿童气质评估(3-7岁）</title>
+	<link rel="stylesheet" type="text/css" href="css/rest.css"/>
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <script type="text/javascript">
+        var is_low = navigator.userAgent.toLowerCase().indexOf('android') != -1;
+        var _ww = (window.screen.availWidth * (window.devicePixelRatio || 1.5) / 1);
+        if(is_low && _ww < 720) {
+            document.writeln('<meta name="viewport" content="width=750px,target-densitydpi=device-dpi,user-scalable=yes,initial-scale=0.5" />');
+        } else {
+            document.writeln('<meta name="viewport" content="width=750px,target-densitydpi=device-dpi,user-scalable=no" />');
+        }
+    </script>
+    <script type="text/javascript" charset="utf-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/mobileSelect.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/js.js"></script>
+</head>
+
+<body class="bj_violet">
+	<div class="zqrtSimple">
+		<div class="mapZqrt">
+			<canvas id="fivePoint" width="662" height="540"></canvas>
+		</div>
+		<div class="txt">
+				<div class="bt">您家宝宝的气质类型属于"中间型"</div>
+				<p>中间型的儿童占儿童总数的35%，他们往往具有"难养型"、"易养型"、"启动缓慢型"三种气质类型的混合特点，属于上述类型中间型或交叉型。</p>
+				<p>这类型的孩子大多数时候情绪基本稳定、不易激动，对周围的新事物接受能力和对环境的适应能力处于中等水平，在成人的鼓励下能够主动接近陌生的环境和不熟悉的人。</p>
+				<p>遇到开心的事情不会表现得特别兴奋，遇到不如意的事情也不会表现得十分气愤，较少与周围人产生矛盾。</p>
+			</div>
+	</div>
+	<a href="javascript:;" class="iconYellow">立即查看完整版报告</a>
+	<script type="text/javascript" charset="utf-8" src="js/canvas_zqrt.js"></script>
+	<script>
+		pop.canvasM([4,1,2,3,4,3,2,1,0]);//param:[日常活动、作息规律性、变化接受度、环境适应性、反应激烈度、情绪情悦度、内在坚持度、注意分散度、外部敏感度]
+		
+		//-- 0 对应 7
+		//-- 1 对应 5
+		//-- 2 对应 3
+		//-- 3 对应 1
+		//-- 4 对应 -1
+	</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=750,target-densitydpi=device-dpi,user-scalable=no" />
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="keywords" content="" />
+    <meta name="description" content="">
+    <title>所罗门学习风格测试</title>
+	<link rel="stylesheet" type="text/css" href="css/rest.css"/>
+	<link type="text/css" rel="stylesheet" href="css/rolldate.css">
+	<link type="text/css" rel="stylesheet" href="css/mobileSelect.css">
+	<link type="text/css" rel="stylesheet" href="css/mobiscroll.css">
+    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+    <script type="text/javascript">
+        var is_low = navigator.userAgent.toLowerCase().indexOf('android') != -1;
+        var _ww = (window.screen.availWidth * (window.devicePixelRatio || 1.5) / 1);
+        if(is_low && _ww < 720) {
+            document.writeln('<meta name="viewport" content="width=750px,target-densitydpi=device-dpi,user-scalable=yes,initial-scale=0.5" />');
+        } else {
+            document.writeln('<meta name="viewport" content="width=750px,target-densitydpi=device-dpi,user-scalable=no" />');
+        }
+    </script>
+    <script type="text/javascript" charset="utf-8" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/mobileSelect.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/js.js"></script>
+</head>
+
+<body>
+	<div class="reportIntr" style="margin-bottom:70px;">
+		<div class="cont">
+			<div class="bt"><em></em>被测评者基本信息</div>
+			<p>基本信息很重要，测评结果的统计和计算与这些信息有关，请认真填写。</p>
+			<div class="selSex">
+				<div class="sex">性别</div>
+				<div class="sel selIcon">
+					<a href="javascript:;" class="active">男</a>
+					<a href="javascript:;">女</a>
+				</div>
+			</div>
+			<ul class="selSex">
+				<li><span>出生日期</span><input id="beginDate" class="other" type="text" placeholder=""/></li>
+			</ul>
+		</div>
+	</div>
+	<a href="javascript:;" class="iconStart">开始答题</a>
+
+<script type="text/javascript" src="js/rolldate.min.js"></script>
+<script src="js/mobiscroll.js"></script>
+
+<script>
+$(function(){
+	var $beginDate = $('#beginDate');
+	var now = new Date(new Date().setMinutes(new Date().getMinutes() + 15)), maxDate = new Date(new Date().setMonth(new Date().getMonth() + 3));
+	var dateType = {
+			theme: 'ios7',
+			lang: 'zh',
+			display: 'bottom',
+			height: 80,
+			dateOrder: 'yyMMdd',
+        }
+        dateType.maxDate = now;
+        dateType.minDate = new Date("1970-01-01");
+        dateType.maxDate = now;
+        $beginDate.mobiscroll().date(dateType);
+
+})
+</script>
+</body>
+
+</html>
