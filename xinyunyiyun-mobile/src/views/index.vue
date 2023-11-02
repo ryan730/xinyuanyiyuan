@@ -82,7 +82,7 @@ export default {
         const popShow = ref(false);
         const showPopup = () => {
             const result = state.listData.filter((item) => {
-                return item.finished == 1;
+                return item.finished == 0;
             })
             console.log('----showPopup--finished', state.listData, result)
             if (result.length > 0) {
