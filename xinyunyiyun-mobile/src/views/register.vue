@@ -35,12 +35,18 @@
                 <van-field v-model="result.code" center clearable name="code" label="验证码" placeholder="输入短信验证码"
                     :rules="[{ required: true, message: '请输入短信验证码' }]">
                     <template #button>
-                        <van-button size="small" type="primary" color="#FFA000" @click="getSMSHandler">发送验证码</van-button>
+                        <van-button size="small" type="primary" color="#FFA000" @click="getSMSHandler" class="vanb"
+                            :disabled="disabledsms">
+                            <span v-if="!disabledsms">发送验证码</span>
+                            <van-count-down ref="countDown" class="vcd" :time="time" format="ss" v-if="disabledsms"
+                                @finish="onFinish" />
+                            <span v-if="disabledsms">秒后重试</span>
+                        </van-button>
                     </template>
                 </van-field>
             </van-cell-group>
-            <div class="regist-text" @click="gotoLoginHandler">
-                <h5>登录账号</h5>
+            <div class="regist-text">
+                <h5 @click="gotoLoginHandler">登录账号</h5>
             </div>
             <div class="regis-submit">
                 <van-button type="primary" block native-type="submit" :loading="loading" color="#FFA000">
@@ -62,7 +68,7 @@
     </div>
 </template>
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
 import { FormInstance, showToast } from 'vant';
 import { getRegister, getsms } from '@/service/login';
 import { useStore } from 'vuex';
@@ -71,11 +77,14 @@ import { debounce, getPxToRem } from "@/utils";
 
 export default {
     setup() {
+        const disabledsms = ref(false);
         const loading = ref(false);
         const formRef = ref(null);
         const formMobileRef = ref(null);
         const store = useStore();
         const router = useRouter();
+        const time = ref(60 * 1000);
+        const countDown = ref(null);
 
         const onSubmit = debounce(async (values) => {
             console.log('onSubmit-values======', values)
@@ -139,6 +148,18 @@ export default {
             showPicker.position = false;
         };
 
+        const onFinish = () => {
+            disabledsms.value = false;
+        }
+
+        onMounted(() => {
+
+        })
+
+        onBeforeUnmount(() => {
+            time.value = 0;
+        })
+
 
         const currentDate = ref(['2023', '01', '01']);
 
@@ -154,6 +175,7 @@ export default {
                 console.log('valiate', valiate);
                 if (!valiate) {
                     result.code = '';
+                    disabledsms.value = true;
                     const res = await getsms(result.mobile);
                     console.log('getSMSHandler', res);
                     const { code, msg, data } = res;
@@ -188,6 +210,10 @@ export default {
             validator_mobile,
             getSMSHandler,
             gotoLoginHandler,
+            onFinish,
+            disabledsms,
+            time,
+            countDown,
         };
     },
 };
@@ -254,5 +280,21 @@ export default {
         font-size: 30px;
         text-decoration: underline;
     }
+}
+</style>
+<style lang="less">
+.regis-container {
+    .vanb {
+        .van-button__text {
+            display: flex;
+            align-items: center;
+
+        }
+    }
+
+    .vcd {
+        color: white;
+    }
+
 }
 </style>
