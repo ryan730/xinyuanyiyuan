@@ -118,7 +118,7 @@ const getUserList = async () => {
   searchForm.loading = false;
 };
 
-const handleDownLoad = async (rows?: any[]) => {
+const handleDownLoad = async () => {
   ///multipleTableRef.value!.toggleRowSelection(row, undefined)
   const sendParams = toRaw(multipleSelection.value).map((item: any) => {
     return item.uid;
