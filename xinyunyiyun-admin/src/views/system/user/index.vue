@@ -25,11 +25,11 @@
           <!-- <div class="table-header-actives flex-1 flex justify-end">
             <el-button type="primary">新增</el-button>
           </div> -->
-          <el-button type="primary" :loading="false">下载</el-button>
+          <el-button type="primary" :loading="false" @click="handleDownLoad">下载</el-button>
         </div>
 
-        <el-table :data="userTable" border>
-          <el-table-column type="selection" width="55" />
+        <el-table :data="userTable" ref="multipleTableRef" border @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55" :selectable="canBeSelect" />
           <el-table-column width="60" show-overflow-tooltip :label="i18nSystemUser('table.uid')" prop="uid">
           </el-table-column>
           <el-table-column width="60" show-overflow-tooltip :label="i18nSystemUser('table.status')" prop="status">
@@ -65,15 +65,17 @@
 </template>
 <script lang="ts" setup>
 import { UserService } from "@/apis";
-import { reactive, ref } from "vue";
+import { reactive, ref, toRaw } from "vue";
 import { User } from "@/types";
-import type { ElForm } from "element-plus";
+import type { ElForm, ElTable } from "element-plus";
 import { i18nSystemUser, i18nGlobal } from "@/utils";
 import { sexFilter } from "@/filter";
 import { Dept } from "@/types";
 
 // searchForm 的 ref 引用 用来校验和重置表单
 const searchFormRef = ref<InstanceType<typeof ElForm>>();
+const multipleTableRef = ref<InstanceType<typeof ElTable>>();
+const multipleSelection = ref<any[]>([])
 
 const getTestComplate = (row: any, column: any) => {
   return row[column.property] == 1 ? '已完成' : '未完成';
@@ -102,9 +104,10 @@ const resetForm = () => {
   getUserList();
 };
 const handleNodeClick = () => { };
+
 const getUserList = async () => {
   searchForm.loading = true;
-  const res = (await UserService.query({ page: searchForm.pageNum })) as any;
+  const res = (await UserService.getList({ page: searchForm.pageNum })) as any;
 
   console.log('UserService-----', searchForm.pageNum, res);
   const { users, count, cur_page } = res.data;
@@ -114,6 +117,30 @@ const getUserList = async () => {
   searchForm.pageSize = searchForm.pageSize || 20;
   searchForm.loading = false;
 };
+
+const handleDownLoad = async (rows?: any[]) => {
+  ///multipleTableRef.value!.toggleRowSelection(row, undefined)
+  const sendParams = toRaw(multipleSelection.value).map((item: any) => {
+    return item.uid;
+  })
+  console.log('multipleSelection======', JSON.stringify(sendParams));
+  const res = (await UserService.downLoad({ uids: JSON.stringify(sendParams) })) as any;
+}
+
+const handleSelectionChange = (val: User[]) => {
+  multipleSelection.value = val;
+
+}
+
+const canBeSelect = (row: any) => {
+  if (row?.t1 == 1 && row?.t2 == 1 && row?.t3 == 1) {
+    return true; // 返回true 可以选择
+  } else {
+    return false; // 返回false 禁止选择
+  }
+}
+
+
 const onChangePagination = (val: any) => {
   searchForm.pageNum = val.page;
   getUserList();

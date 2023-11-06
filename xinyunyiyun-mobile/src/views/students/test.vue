@@ -272,7 +272,6 @@ export default {
         }
 
         const onContinueHandle = () => {
-            console.log('sdfsdfsdfsdf------')
             showPopup(false);
         }
 
@@ -546,6 +545,11 @@ export default {
                 return last + cur;
             }, 0);
         }
+
+        // 测试点击
+        // setInterval(() => {
+        //     document.querySelector('.iconTwo a').click();
+        // }, 2000)
 
         return {
             ...toRefs(state),
