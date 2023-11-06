@@ -1,10 +1,11 @@
 <template>
   <div class="menu-page">
-    <el-form :model="form">
-      <el-form-item label="" :label-width="formLabelWidth">
+    <el-form ref="exampleForm" :model="form">
+      <el-form-item label="" :label-width="formLabelWidth" prop="file">
         <el-upload class="upload-demo" ref="uploadExcel" drag :action="sendURL" :limit=limitNum :auto-upload="false"
           accept=".xlsx" :before-upload="beforeUploadFile" :on-change="fileChange" :on-exceed="exceedFile"
-          :on-success="handleSuccess" :on-error="handleError" :file-list="fileList" multiple="false">
+          :on-success="handleSuccess" :on-error="handleError" :on-remove="handleRemove" :file-list="fileList"
+          multiple="false">
           <el-icon class="el-icon--upload"><upload-filled /></el-icon>
           <div class="el-upload__text">
             Drop file here or <em>click to upload</em>
@@ -24,11 +25,13 @@
         <el-button size="small" plain>选择文件</el-button>
         <div slot="tip" class="el-upload__tip">只能上传xlsx(Excel2007)文件，且不超过10M</div>
       </el-upload> -->
+        <el-button size="small" type="primary" @click="uploadFile">立即上传</el-button>
+        <el-button size="small" @click="uploadCancel">取消</el-button>
       </el-form-item>
-      <el-form-item>
+      <!-- <el-form-item>
         <el-button size="small" type="primary" @click="uploadFile">立即上传</el-button>
         <el-button size="small">取消</el-button>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
   </div>
 </template>
@@ -36,7 +39,18 @@
 <script>
 import axios from 'axios'
 export default {
+  name: 'ExampleForm',
   data() {
+
+    //定义校验规则
+    let validateFileUrl = (rule, value, callback) => {
+      if (this.fileList.length < 1) {//我控制了FileList 长度代表文件个数
+        callback(new Error("请上传文件"))
+      } else {
+        callback()
+      }
+    };
+
     return {
       limitNum: 1,
       formLabelWidth: '0px',
@@ -46,7 +60,17 @@ export default {
       },
       fileList: [],
       //sendURL:'https://jsonplaceholder.typicode.com/posts/',
-      sendURL: 'http://ivapi.xinyunyiyun.cn/admin/userImport'
+      sendURL: 'http://ivapi.xinyunyiyun.cn/admin/userImport',
+      rules: {
+        file: [
+          {
+            required: true,
+            ///message: '请至少选择一个产品标签',
+            validator: validateFileUrl,
+            trigger: 'change'
+          }
+        ]
+      },
     }
   },
   methods: {
@@ -65,6 +89,9 @@ export default {
       this.form.file1 = file.raw;
       console.log(this.form.file)
       console.log(fileList)
+      if (fileList.length !== 0) {
+        this.$refs.exampleForm.validateField('file')
+      }
     },
     // 上传文件之前的钩子, 参数为上传的文件,若返回 false 或者返回 Promise 且被 reject，则停止上传
     beforeUploadFile(file) {
@@ -109,8 +136,25 @@ export default {
         message: `文件上传失败`
       });
     },
+    handleRemove(uploadFile, fileList) {
+      if (fileList.length === 0) {
+        this.form.file = null
+        this.$refs.exampleForm.validateField('file')
+      }
+    },
+    uploadCancel() {
+      this.$refs.uploadExcel.abort();
+    },
     uploadFile() {
-      this.$refs.uploadExcel.submit()
+      const fileLength = this.form.file;
+      if (!fileLength) {
+        this.$notify.error({
+          title: '错误',
+          message: '请先选择文件'
+        });
+        return;
+      }
+      this.$refs.uploadExcel.submit();
 
       // let formData = new FormData()
       // formData.append('file', this.form.file)
