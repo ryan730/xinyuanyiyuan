@@ -36,7 +36,7 @@
           </el-table-column>
           <el-table-column show-overflow-tooltip :label="i18nSystemUser('table.name')" prop="name"> </el-table-column>
           <el-table-column class-name="colum-elm" show-overflow-tooltip :label="i18nSystemUser('table.mobile')"
-            prop="mobile"> </el-table-column>
+            prop="mobile" :formatter="getCecurityMobile"> </el-table-column>
           <el-table-column show-overflow-tooltip :label="i18nSystemUser('table.gender')" :formatter="getTestGender"
             prop="gender"> </el-table-column>
           <el-table-column show-overflow-tooltip :label="i18nSystemUser('table.position')" prop="position">
@@ -83,6 +83,10 @@ const getTestComplate = (row: any, column: any) => {
 
 const getTestGender = (row: any, column: any) => {
   return row[column.property] == 1 ? '男' : '女';
+}
+
+const getCecurityMobile = (row: any, column: any) => {
+  return row[column.property].replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
 }
 
 // 搜索的表单
