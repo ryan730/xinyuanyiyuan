@@ -38,7 +38,7 @@
           <el-table-column class-name="colum-elm" show-overflow-tooltip :label="i18nSystemUser('table.mobile')"
             prop="mobile" :formatter="getCecurityMobile"> </el-table-column>
           <el-table-column show-overflow-tooltip :label="i18nSystemUser('table.gender')" :formatter="getTestGender"
-            prop="gender"> </el-table-column>
+            prop="gender" width="55"> </el-table-column>
           <el-table-column show-overflow-tooltip :label="i18nSystemUser('table.position')" prop="position">
           </el-table-column>
           <el-table-column class-name="colum-elm" show-overflow-tooltip :label="i18nSystemUser('table.created_at')"
