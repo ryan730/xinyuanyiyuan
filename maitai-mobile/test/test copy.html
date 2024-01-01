@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Avatar Example</title>
+  <style>
+    .avatar {
+      margin-left: 310px;
+      margin-top: 100px;
+    }
+
+    img {
+      --s: 200px;
+      --c1: #c02942;
+      --c2: #f6a8a8;
+      --b: 5px;
+      --f: 1;
+      --bgOption: content-box no-repeat center/ calc(100% / var(--f)) 100%;
+      --shrink: calc((var(--s)/ var(--f) - var(--s))/2 - var(--b));
+
+
+      width: var(--s);
+      height: var(--s);
+      cursor: pointer;
+      transition: 0.5s;
+      outline: var(--b) solid var(--c1);
+      outline-offset: var(--shrink);
+      border-radius: 0 0 999px 999px;
+      padding-top: 100px;
+      transform: scale(var(--f));
+      /* background: linear-gradient(#000 0 0) no-repeat center calc(0px - var(--shrink)) / calc(100% / var(--f) - 2 * var(--b)) 50%; */
+      background: radial-gradient(circle closest-side,
+          var(--c2), calc(99% - var(--b)),
+          var(--c1), calc(100% - var(--b)),
+          var(--c1) 99%,
+         transparent 100%) var(--bgOption);
+
+      -webkit-mask:
+        linear-gradient(#000 0 0) no-repeat center calc(0px - var(--shrink)) / calc(100% / var(--f)  - 2 * var(--b)) 50%,
+        radial-gradient(circle closest-side, #000 99%, transparent 1%) var(--bgOption);
+      ;
+    }
+
+    img:hover {
+      --f: 1.2
+    }
+  </style>
+</head>
+<body>
+  <div class="avatar">
+    <img src="./images/icon.png" alt="avatar">
+  </div>
+  <div class="bg"></div>
+  <!-- <div class="mybroder"> -->
+
+  </div>
+</body>
+</html>
