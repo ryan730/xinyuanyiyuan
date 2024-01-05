@@ -1,25 +1,23 @@
 <template>
-    <van-nav-bar title="入职测评" />
+    <van-nav-bar title="登陆" />
     <div>
-        <img :src="require('../assets/images/bz@1x.png')" alt="" class="bg_img">
+        <img :src="require('../assets/images/login-pic.png')" alt="" class="bg_img">
     </div>
-    <van-row class="title_1" justify="center">
+    <!-- <van-row class="title_1" justify="center">
         <span>心云亦云公司入职测评</span>
     </van-row>
     <van-row class="title_2" justify="center">
         <span>职业在线测评是招聘筛选人才的一个环节，考察的是map性格测验、tpo心理成熟度测验，有些岗位还会考察IQT思维能力测验，tpo心理成熟度测验和IQT思维能力测验刷人率都很高</span>
-    </van-row>
+    </van-row> -->
     <div class="login-container">
 
         <van-form ref="formRef" @submit="onSubmit">
             <van-cell-group inset>
                 <van-field ref="formMobileRef" v-model="result.mobile" name="mobile" label="手机号" placeholder="填写手机号码"
-                    maxlength="11" :rules="[{ required: true, message: '请填写正确手机号', validator: validator_mobile }]" />
-                <van-field v-model="result.code" center clearable name="code" label="验证码" placeholder="输入短信验证码"
-                    autocomplete="one-time-code" :rules="[{ required: true, message: '请输入短信验证码' }]">
-                    <template #button>
+                    maxlength="11" :rules="[{ required: true, message: '请填写正确手机号', validator: validator_mobile }]">
 
-                        <van-button size="small" type="primary" color="#FFA000" @click="getSMSHandler" class="vanb"
+                    <template #button>
+                        <van-button size="small" type="primary" color="#23bcba" @click="getSMSHandler" class="vanb"
                             :disabled="disabledsms">
                             <span v-if="!disabledsms">发送验证码</span>
                             <van-count-down ref="countDown" class="vcd" :time="time" format="ss" v-show="disabledsms"
@@ -27,14 +25,18 @@
                             <span v-if="disabledsms">秒后重试</span>
                         </van-button>
                     </template>
+
+                </van-field>
+                <van-field v-model="result.code" center clearable name="code" label="验证码" placeholder="输入短信验证码"
+                    autocomplete="one-time-code" :rules="[{ required: true, message: '请输入短信验证码' }]">
                 </van-field>
             </van-cell-group>
             <div class="regist-text">
                 <h5 @click="gotoRegistHandler">注册账号</h5>
             </div>
             <div class="login-submit">
-                <van-button type="primary" block native-type="submit" :loading="loading" color="#FFA000">
-                    登录
+                <van-button type="primary" block native-type="submit" :loading="loading" color="#23bcba">
+                    进入答题
                 </van-button>
             </div>
 
@@ -188,8 +190,12 @@ export default {
 }
 
 .bg_img {
-    position: absolute;
-    width: 100%;
+    //position: absolute;
+    width: 375px;
+    height: 287px;
+    margin-top: 56px;
+    margin-left: 95px;
+    margin-bottom: 118px;
 }
 
 .login-container {
@@ -200,9 +206,10 @@ export default {
         margin-top: 50px;
     }
 
-    .van-button {
-        // background-color: #FFA000;
-        // margin-top: 20px;
+    .van-field {
+        background-color: #f6f6f6;
+        border-radius: 50px;
+        margin-bottom: 30px;
     }
 
     .regist-text {
@@ -223,11 +230,17 @@ export default {
 </style>
 <style lang="less">
 .login-container {
+    .van-button {
+        border-radius: 30px;
+        color: white;
+        background: rgb(205 205 205);
+        border-color: rgb(205 205 205);
+        border-radius: 60px;
+    }
     .vanb {
         .van-button__text {
             display: flex;
             align-items: center;
-
         }
     }
 

@@ -85,6 +85,16 @@ const router = createRouter({
         title: "答题",
       },
     },
+    {
+      path: "/definite",
+      name: "definite",
+      component: defineAsyncComponent(() =>
+        import(`../views/definite.vue`)
+      ),
+      meta: {
+        title: "我的推广",
+      },
+    },
     // {
     // 	path: '/reportLite',
     // 	name: 'reportLite',
