@@ -22,3 +22,7 @@ export function getRegister(mobile, name, birthday, position, code, gender) {
     `/user/reg?mobile=${mobile}&name=${name}&birthday=${birthday}&position=${position}&code=${code}&gender=${gender}`
   );
 }
+
+export function userLogin(code) {
+  return axios.post(`/user/userLogin?code=${code}`);
+}

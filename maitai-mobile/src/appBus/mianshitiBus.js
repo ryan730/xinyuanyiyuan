@@ -8,6 +8,7 @@ import store from "../store/index";
 
 const vt = require("vant");
 
+
 export default class mianshitiBus {
   constructor(p) {
     this.platformInfo = p;
@@ -24,13 +25,15 @@ export default class mianshitiBus {
   async noTokenEntryProcess(to, next) {
     ///showToast("用户未登录,即将跳转到登录页...");
     if (to.name != "login" && to.name != "register") {
+    //if (to.name != "login") {
       window.___router___.push("login");
     }
   }
 
   async redirectProcess(to, next) {
-    if (to.name == "login" || to.name == "register") {
-      window.___router___.push("/");
+    //if (to.name == "login" || to.name == "register") {
+    if (to.name == "login") {
+      window.___router___.push("promotion");
       ///next();
     }
   }

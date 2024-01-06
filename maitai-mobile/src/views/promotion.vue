@@ -3,8 +3,8 @@
         <div class="group_1 flex-col">
             <div class="group_2 flex-col">
                 <div class="block_2 flex-row justify-between">
-                    <img class="label_3" referrerpolicy="no-referrer"
-                        src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPngaeae8f2770c7365571e2a9f568b8f3e91ab77dd66d24d85d07a238b22042f3c2" />
+                    <img class="label_3" referrerpolicy="no-referrer" :src="require('../assets/images/promt-1.png')"
+                        @click="onClickLeft" />
                     <span class="text_2">我的推广</span>
                 </div>
             </div>
@@ -18,7 +18,7 @@
                         <div class="image-text_1 flex-row justify-between">
                             <span class="text-group_2">提现记录</span>
                             <img class="thumbnail_1" referrerpolicy="no-referrer"
-                                src="https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPnge3d133c469c31bce2ae8068b21592b37b51fbfe5451128f6c9e4554a546e4d53" />
+                                :src="require('../assets/images/promt-2.png')" />
                         </div>
                     </div>
                 </div>
@@ -28,14 +28,11 @@
                     </div>
                 </div>
             </div>
-            <div class="group_4 flex-col">
-                <div class="box_4 flex-col"></div>
-            </div>
             <div class="group_5 flex-col">
                 <span class="text_6">常用功能</span>
                 <div class="grid_1 flex-row">
-                    <div class="image-text_2 flex-col" v-for="(item, index) in loopData0" :key="index">
-                        <img class="image_2" referrerpolicy="no-referrer" :src="item.lanhuimage0" />
+                    <div class="image-text_2 flex-col" v-for="(item, index) in loopData" :key="index" @click="item.click">
+                        <img class="image_2" referrerpolicy="no-referrer" :src="item.lanhuimage" />
                         <span class="text-group_3" v-html="item.lanhutext0"></span>
                     </div>
                 </div>
@@ -53,31 +50,56 @@ import { debounce, getPxToRem } from "@/utils";
 
 export default {
     setup() {
-
+        const router = useRouter();
         return {
-            loopData0: [
+            loopData: [
                 {
-                    lanhuimage0:
-                        'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPng9d06deabdcf28dd64d85e7c377d228d0ad6ee844ee30b20ddf02fed1b1b87318',
+                    lanhuimage:
+                        require('../assets/images/promt-3.png'),
                     lanhutext0: '生成推广二维码',
+                    click: () => {
+                        router.push({
+                            name: 'QRcode',
+                        })
+                    }
                 },
                 {
-                    lanhuimage0:
-                        'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPngd7a46cb77886abb0fa40479c9f2146af437fd944ce4f89c49950f1bcecd4a6a6',
+                    lanhuimage:
+                        require('../assets/images/promt-4.png'),
                     lanhutext0: '佣金明细',
+                    click: () => {
+                        router.push({
+                            name: 'commissionList',
+                        })
+                    }
                 },
                 {
-                    lanhuimage0:
-                        'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPngba1c83110f10405b5b2e666b77530824036099e0dfd3492b042eaa7b66b304d9',
+                    lanhuimage:
+                        require('../assets/images/promt-5.png'),
                     lanhutext0: '推广订单',
+                    click: () => {
+                        router.push({
+                            name: 'promotionList',
+                        })
+                    }
                 },
                 {
-                    lanhuimage0:
-                        'https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPngd68e70f35a3d7abf5e873c16868ce53969fd3546647af85017f23299f628e56e',
+                    lanhuimage:
+                        require('../assets/images/promt-6.png'),
                     lanhutext0: '设置',
+                    click: () => {
+                        router.push({
+                            name: 'setting',
+                        })
+                    }
                 },
             ],
         };
+    },
+    methods: {
+        onClickLeft: () => {
+            history.back();
+        }
     },
 };
 </script>
@@ -156,7 +178,7 @@ export default {
 }
 
 .group_3 {
-    background: url(https://lanhu.oss-cn-beijing.aliyuncs.com/SketchPnge192a3306ceb627cef72351b4d40d4e33abde64534e9b80f66eb3fd144b8caba) 100% no-repeat;
+    background: url(../assets/images/promt-bg.png) 100% no-repeat;
     background-size: 100% 100%;
     padding: 27px 0 178px 237px;
 }
@@ -317,11 +339,11 @@ export default {
 }
 </style>
 <style>
-
 body * {
     box-sizing: border-box;
     flex-shrink: 0;
 }
+
 /*
 body {
     font-family: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma,
@@ -407,4 +429,5 @@ button:active {
 .align-end {
     display: flex;
     align-items: flex-end;
-}</style>
+}
+</style>

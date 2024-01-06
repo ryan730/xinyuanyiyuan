@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { defineAsyncComponent } from "vue";
 import { queryString } from "@/utils";
-import { login } from "@/service/login";
+import { userLogin } from "@/service/login";
 import { config } from "@/config";
 import store from "../store/index";
 //import wx from 'weixin-js-sdk'
@@ -14,25 +14,31 @@ console.log("start!");
 
 let wx = null;
 
+
 const router = createRouter({
   history: createWebHistory(), // history 模式
   routes: [
     {
       path: "/",
       name: "index",
-      component: defineAsyncComponent(() => import(`../views/index.vue`)),
-      meta: {
-        title: "首页",
-      },
+      redirect:"/promotion"
     },
-    {
-      path: "/done",
-      name: "done",
-      component: defineAsyncComponent(() => import(`../views/wellDone.vue`)),
-      meta: {
-        title: "完成评测",
-      },
-    },
+    // {
+    //   path: "/",
+    //   name: "index",
+    //   component: defineAsyncComponent(() => import(`../views/index.vue`)),
+    //   meta: {
+    //     title: "首页",
+    //   },
+    // },
+    // {
+    //   path: "/done",
+    //   name: "done",
+    //   component: defineAsyncComponent(() => import(`../views/wellDone.vue`)),
+    //   meta: {
+    //     title: "完成评测",
+    //   },
+    // },
     {
       path: "/login",
       name: "login",
@@ -86,13 +92,63 @@ const router = createRouter({
       },
     },
     {
-      path: "/definite",
-      name: "definite",
+      path: "/promotion",
+      name: "promotion",
       component: defineAsyncComponent(() =>
-        import(`../views/definite.vue`)
+        import(`../views/promotion.vue`)
       ),
       meta: {
         title: "我的推广",
+      },
+    },
+    {
+      path: "/QRcode",
+      name: "QRcode",
+      component: defineAsyncComponent(() =>
+        import(`../views/QRcode.vue`)
+      ),
+      meta: {
+        title: "生成推广二维码",
+      },
+    },
+    {
+      path: "/setting",
+      name: "setting",
+      component: defineAsyncComponent(() =>
+        import(`../views/setting.vue`)
+      ),
+      meta: {
+        title: "设置",
+      },
+    },
+    {
+      path: "/commissionList",
+      name: "commissionList",
+      component: defineAsyncComponent(() =>
+        import(`../views/commissionList.vue`)
+      ),
+      meta: {
+        title: "佣金明细",
+      },
+    },
+    {
+      path: "/promotionList",
+      name: "promotionList",
+      component: defineAsyncComponent(() =>
+        import(`../views/promotionList.vue`)
+      ),
+      meta: {
+        title: "推广订单",
+      },
+    },
+    {
+      path: "/cashList",
+      name: "cashList",
+      component: defineAsyncComponent(() =>
+        import(`../views/cashList.vue`)
+      ),
+      meta: {
+        title: "提现记录",
       },
     },
     // {
@@ -184,6 +240,40 @@ async function entryOtherPlatform(to, from, next) {
   subPlatform.startProcess(to, from, next);
 }
 
+async function entryWeixin(code) {
+	let storageData = localStorage.getItem("token") || "";
+	if (storageData) { // 是否有缓存
+		const { token, time } = JSON.parse(storageData);
+		const curTime = new Date().getTime();
+		if (curTime - time >= config.OVERTIME) {
+			// loginHelper(url);
+			localStorage.removeItem("token");
+			getWXCode();
+		}
+	} else {// 第一次进入
+		const { data } = await userLogin(code);
+		// 将token存储到localstorge
+		window.localStorage.setItem('token', JSON.stringify({
+			token: data.token,
+			time: new Date().getTime()
+		}));
+	}
+}
+
+async function getLazyWeixin() {
+	if (!wx || !wx.default) {
+		wx = await import(/* webpackChunkName: 'weixinJsSdk' */ `weixin-js-sdk`)
+	}
+	return wx;
+}
+
+function getWXCode() {
+	const redirectUri = encodeURIComponent(window.location.href);
+	let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
+	window.location.replace(newURL);
+}
+
+
 router.beforeEach(async (to, from, next) => {
   const code = queryString("code");
 
@@ -199,6 +289,14 @@ router.beforeEach(async (to, from, next) => {
   // } else {
 
   // }
+  if (code) {
+		wx = await getLazyWeixin();
+		entryWeixin(code);
+    next();
+    return;
+	} 
+
+
   entryOtherPlatform(to, from, next);
   next();
 });
