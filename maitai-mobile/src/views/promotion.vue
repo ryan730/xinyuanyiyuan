@@ -3,8 +3,10 @@
         <div class="group_1 flex-col">
             <div class="group_2 flex-col">
                 <div class="block_2 flex-row justify-between">
-                    <img class="label_3" referrerpolicy="no-referrer" :src="require('../assets/images/promt-1.png')"
-                        @click="onClickLeft" />
+                    <img class="label_3" 
+                    style="opacity: 0"
+                    referrerpolicy="no-referrer" :src="require('../assets/images/promt-1.png')"
+                    @click="onClickRight" />
                     <span class="text_2">我的推广</span>
                 </div>
             </div>
@@ -15,7 +17,7 @@
                         <span class="text_4">182.76</span>
                     </div>
                     <div class="box_2 flex-row">
-                        <div class="image-text_1 flex-row justify-between">
+                        <div class="image-text_1 flex-row justify-between" @click="handleCashouut">
                             <span class="text-group_2">提现记录</span>
                             <img class="thumbnail_1" referrerpolicy="no-referrer"
                                 :src="require('../assets/images/promt-2.png')" />
@@ -97,8 +99,13 @@ export default {
         };
     },
     methods: {
-        onClickLeft: () => {
+        onClickLeft(){
             history.back();
+        },
+        handleCashouut(){
+            this.$router.push({
+                name: 'cashList',
+            })
         }
     },
 };
@@ -341,7 +348,7 @@ export default {
 <style>
 body * {
     box-sizing: border-box;
-    flex-shrink: 0;
+    //flex-shrink: 0;
 }
 
 /*

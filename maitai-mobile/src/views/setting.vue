@@ -3,7 +3,9 @@
         <div class="block_1 flex-col">
             <div class="block_2 flex-col">
                 <div class="section_2 flex-row justify-between">
-                    <img class="image_2" referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
+                    <img class="image_2" 
+                    style="opacity: 0"
+                    referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
                         @click="onClickLeft" />
                     <span class="text_2">设置</span>
                 </div>
@@ -23,7 +25,7 @@ export default {
         
     },
     methods: {
-        onClickLeft: () => {
+        onClickLeft(){
             history.back();
         },
         handleSet() {
@@ -37,7 +39,7 @@ export default {
 <style lang="less" scoped>
 body * {
     box-sizing: border-box;
-    flex-shrink: 0;
+    //flex-shrink: 0;
 }
 
 body {

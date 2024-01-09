@@ -3,7 +3,9 @@
         <div class="section_1 flex-col">
             <div class="box_1 flex-col">
                 <div class="section_3 flex-row justify-between">
-                    <img class="image_2" referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
+                    <img class="image_2" 
+                    style="opacity: 0"
+                    referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
                         @click="onClickLeft" />
                     <span class="text_2">佣金明细</span>
                 </div>
@@ -69,7 +71,7 @@ export default {
 <style scoped lang="less">
 body * {
     box-sizing: border-box;
-    flex-shrink: 0;
+    //flex-shrink: 0;
 }
 
 body {

@@ -3,7 +3,9 @@
         <div class="block_1 flex-col">
             <div class="block_2 flex-col">
                 <div class="group_2 flex-row justify-between">
-                    <img class="image_2" referrerpolicy="no-referrer"
+                    <img class="image_2" 
+                    style="opacity: 0"
+                    referrerpolicy="no-referrer"
                     :src="require('../assets/images/qrback.png')"
                     @click="onClickLeft" />
                     <span class="text_2">推广订单</span>
@@ -59,7 +61,7 @@ export default {
 <style scoped lang="less">
 body * {
     box-sizing: border-box;
-    flex-shrink: 0;
+    //flex-shrink: 0;
 }
 
 body {

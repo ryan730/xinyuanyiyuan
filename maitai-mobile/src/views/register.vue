@@ -1,5 +1,5 @@
 <template>
-    <van-nav-bar title="注册" />
+    <!-- <van-nav-bar title="注册" /> -->
     <div>
         <img :src="require('../assets/images/login-pic.png')" alt="" class="bg_img">
     </div>

@@ -3,7 +3,9 @@
         <div class="section_1 flex-col">
             <div class="group_2 flex-col">
                 <div class="group_3 flex-row justify-between">
-                    <img class="image_2" referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
+                    <img class="image_2" 
+                    style="opacity: 0"
+                    referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
                         @click="onClickLeft" />
                     <span class="text_2">生成推广二维码</span>
                 </div>
@@ -61,7 +63,7 @@ export default {
 <style lang="less" scoped>
 body * {
     box-sizing: border-box;
-    flex-shrink: 0;
+    //flex-shrink: 0;
 }
 
 body {

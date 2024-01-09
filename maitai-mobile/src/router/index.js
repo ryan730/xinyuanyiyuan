@@ -21,7 +21,7 @@ const router = createRouter({
     {
       path: "/",
       name: "index",
-      redirect:"/promotion"
+      redirect: "/promotion"
     },
     // {
     //   path: "/",
@@ -241,41 +241,53 @@ async function entryOtherPlatform(to, from, next) {
 }
 
 async function entryWeixin(code) {
-	let storageData = localStorage.getItem("token") || "";
-	if (storageData) { // 是否有缓存
-		const { token, time } = JSON.parse(storageData);
-		const curTime = new Date().getTime();
-		if (curTime - time >= config.OVERTIME) {
-			// loginHelper(url);
-			localStorage.removeItem("token");
-			getWXCode();
-		}
-	} else {// 第一次进入
-		const { data } = await userLogin(code);
-		// 将token存储到localstorge
-		window.localStorage.setItem('token', JSON.stringify({
-			token: data.token,
-			time: new Date().getTime()
-		}));
-	}
+  let storageData = localStorage.getItem("token") || "";
+  if (storageData) { // 是否有缓存
+    const { token, time } = JSON.parse(storageData);
+    const curTime = new Date().getTime();
+    if (curTime - time >= config.OVERTIME) {
+      // loginHelper(url);
+      localStorage.removeItem("token");
+      getWXCode();
+    }
+  } else {// 第一次进入
+    if (!code) {
+      getWXCode();
+    } else {
+      const res = await userLogin(code);
+      console.log('res===',res)
+      // if (res?.code != 1) {
+      //   alert(res?.msg);
+      //   document.write('<div style="width:100%;height:100%;display: flex;justify-content: center;align-items: center;"><h5>微信登陆失败!</h5></div>');
+      //   return;
+      // }
+      // 将token存储到localstorge
+      window.localStorage.setItem('token', JSON.stringify({
+        token: res?.data?.token,
+        time: new Date().getTime()
+      }));
+    }
+  }
 }
 
 async function getLazyWeixin() {
-	if (!wx || !wx.default) {
-		wx = await import(/* webpackChunkName: 'weixinJsSdk' */ `weixin-js-sdk`)
-	}
-	return wx;
+  if (!wx || !wx.default) {
+    wx = await import(/* webpackChunkName: 'weixinJsSdk' */ `weixin-js-sdk`)
+  }
+  return wx;
 }
 
 function getWXCode() {
-	const redirectUri = encodeURIComponent(window.location.href);
-	let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
-	window.location.replace(newURL);
+  const redirectUri = encodeURIComponent(window.location.href);
+  let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
+  window.location.replace(newURL);
 }
 
 
 router.beforeEach(async (to, from, next) => {
-  const code = queryString("code");
+  //http://h5.xinyunyiyun.cn/?code=041Oee0w3zxs223khQ3w3A4NoA0Oee01&state=aaa
+  const code = queryString("code") || '0218nDFa1B6SHG0QuzIa1gCplo18nDFc';
+
 
   console.log("code==" + code, to, from, next);
   // if (to.name == 'test' || to.name == 'content' || to.name == 'reportLite' || to.name == 'reportFull') {
@@ -289,16 +301,16 @@ router.beforeEach(async (to, from, next) => {
   // } else {
 
   // }
-  if (code) {
-		wx = await getLazyWeixin();
-		entryWeixin(code);
-    next();
-    return;
-	} 
 
-
-  entryOtherPlatform(to, from, next);
+  wx = await getLazyWeixin();
+  entryWeixin(code);
   next();
+  return;
+
+
+
+  // entryOtherPlatform(to, from, next);
+  // next();
 });
 
 export default router;

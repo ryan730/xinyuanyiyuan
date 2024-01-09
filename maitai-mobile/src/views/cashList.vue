@@ -6,6 +6,7 @@
             <img
               class="image_2"
               referrerpolicy="no-referrer"
+              style="opacity: 0"
               :src="require('../assets/images/qrback.png')"
                         @click="onClickLeft"
             />
@@ -81,7 +82,7 @@
 <style scoped lang="less">
 body * {
     box-sizing: border-box;
-    flex-shrink: 0;
+    //flex-shrink: 0;
   }
   body {
     font-family: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma,

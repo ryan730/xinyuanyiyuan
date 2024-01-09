@@ -1,6 +1,7 @@
 export const config = {
   // APIURL : '47.100.75.167',
-  APIURL: "http://ivapi.xinyunyiyun.cn",
+  //APIURL: "http://ivapi.xinyunyiyun.cn",
+  APIURL: "http://api.xinyunyiyun.cn",
   URL: "http://h5.xinyunyiyun.cn/",
   //OVERTIME: 30 * 24 * 60 * 60 * 1000,
   OVERTIME: 10 * 60 * 60 * 1000,
