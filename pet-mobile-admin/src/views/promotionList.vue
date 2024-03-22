@@ -3,21 +3,20 @@
         <div class="block_1 flex-col">
             <div class="block_2 flex-col">
                 <div class="group_2 flex-row justify-between">
-                    <img class="image_2" 
-                    style="opacity: 0"
-                    referrerpolicy="no-referrer"
-                    :src="require('../assets/images/qrback.png')"
-                    @click="onClickLeft" />
+                    <img class="image_2" style="opacity: 0" referrerpolicy="no-referrer"
+                        :src="require('../assets/images/qrback.png')" @click="onClickLeft" />
                     <span class="text_2">推广订单</span>
                 </div>
             </div>
             <div class="block_3 flex-col">
-                <span class="text_3">今天</span>
+                <!-- <span class="text_3">今天</span> -->
                 <div class="list_1 flex-col">
-                    <div class="text-wrapper_1 flex-row justify-between" v-for="(item, index) in loopData0" :key="index">
-                        <span class="text_4" v-html="item.lanhutext0"></span>
-                        <span class="text_5" :style="{ color: item.lanhufontColor1 }" v-html="item.lanhutext1"></span>
-                        <span class="text_6" v-html="item.lanhutext2"></span>
+                    <div class="text-wrapper_1 flex-row justify-between" v-for="(item, index) in loopData"
+                        :key="index">
+                        <span class="text_4" v-html="`订单号:${item.id}`"></span>
+                        <span class="text_5" :style="{ color: PAY_COLOR[item.pay_status] }" v-html="PAY_STATUS[item.pay_status]"></span>
+                        <span class="text_6" v-html="getPrice(item.amount)"></span>
+                        <span class="text_7" v-html="item.updated_at"></span>
                     </div>
                 </div>
             </div>
@@ -25,27 +24,55 @@
     </div>
 </template>
 <script>
+import { reactive, onMounted, ref, toRefs } from 'vue';
+import { shareOrderList } from "@/service/user";
 export default {
+    setup() {
+        let listData = [];
+        onMounted(async () => {
+            const res = await shareOrderList();
+            console.log('promotionList====', res);
+            if (res?.code == 1) {
+                listData = [...res?.data]
+            }else {
+                alert(res?.msg || '推广订单获取失败!')
+            }
+        })
+        return {
+            listData,
+        }
+    },
     data() {
         return {
-            loopData0: [
+            PAY_COLOR: {
+                2: 'rgba(29,194,144,1)',
+                3: 'rgba(102,102,102,1)',
+            },
+            PAY_STATUS:{
+                2:'待支付',
+                3:'已支付',
+            },
+            loopData: [
                 {
-                    lanhutext0: '订单ID：xxxxxx',
-                    lanhutext1: '已支付',
-                    lanhufontColor1: 'rgba(29,194,144,1)',
-                    lanhutext2: '16:38',
+                    "id":"1710947414869282692",//订单号
+                    "product_id":"47",//产品id
+                    "amount": "100",//订单金额，单位分
+                    "pay_status": "2",// 支付状态，2:待支付，3 已支付
+                    "updated_at":"2024-03-20 23:10:15",
                 },
                 {
-                    lanhutext0: '订单ID：xxxxxx',
-                    lanhutext1: '未支付',
-                    lanhufontColor1: 'rgba(102,102,102,1)',
-                    lanhutext2: '16:38',
+                    "id":"1710947414869282692",//订单号
+                    "product_id":"47",//产品id
+                    "amount": "100",//订单金额，单位分
+                    "pay_status": "2",// 支付状态，2:待支付，3 已支付
+                    "updated_at":"2024-03-20 23:10:15",
                 },
                 {
-                    lanhutext0: '订单ID：xxxxxx',
-                    lanhutext1: '未支付',
-                    lanhufontColor1: 'rgba(102,102,102,1)',
-                    lanhutext2: '16:38',
+                    "id":"1710947414869282692",//订单号
+                    "product_id":"47",//产品id
+                    "amount": "100",//订单金额，单位分
+                    "pay_status": "2",// 支付状态，2:待支付，3 已支付
+                    "updated_at":"2024-03-20 23:10:15",
                 },
             ],
             constants: {},
@@ -54,6 +81,9 @@ export default {
     methods: {
         onClickLeft: () => {
             history.back();
+        },
+        getPrice(price){
+            return '￥' + (price / 100).toFixed(2);
         }
     },
 };
@@ -249,6 +279,8 @@ button:active {
                     width: 702px;
                     margin-bottom: 18px;
                     padding: 39px 40px 39px 42px;
+                    display: flex;
+                    flex-wrap: wrap;
 
                     .text_4 {
                         overflow-wrap: break-word;
@@ -259,6 +291,7 @@ button:active {
                         text-align: left;
                         white-space: nowrap;
                         line-height: 42px;
+                        flex-wrap: wrap;
                     }
 
                     .text_5 {
@@ -269,6 +302,7 @@ button:active {
                         text-align: left;
                         white-space: nowrap;
                         line-height: 42px;
+                        text-align: left;
                     }
 
                     .text_6 {
@@ -281,6 +315,22 @@ button:active {
                         white-space: nowrap;
                         line-height: 40px;
                         margin-top: 1px;
+                        flex: 50%;
+                        text-align: left;
+                    }
+
+                    .text_7 {
+                        overflow-wrap: break-word;
+                        color: rgba(144, 144, 144, 1);
+                        font-size: 28px;
+                        font-family: PingFang-SC-Medium;
+                        font-weight: normal;
+                        text-align: left;
+                        white-space: nowrap;
+                        line-height: 40px;
+                        margin-top: 1px;
+                        flex: 50%;
+                        text-align: right;
                     }
                 }
             }
@@ -294,5 +344,5 @@ button:active {
             }
         }
     }
-}</style>
-  
+}
+</style>

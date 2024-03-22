@@ -3,10 +3,8 @@
         <div class="section_1 flex-col">
             <div class="group_2 flex-col">
                 <div class="group_3 flex-row justify-between">
-                    <img class="image_2" 
-                    style="opacity: 0"
-                    referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
-                        @click="onClickLeft" />
+                    <img class="image_2" style="opacity: 0" referrerpolicy="no-referrer"
+                        :src="require('../assets/images/qrback.png')" @click="onClickLeft" />
                     <span class="text_2">生成推广二维码</span>
                 </div>
                 <div class="text-wrapper_1 flex-row">
@@ -31,20 +29,42 @@ import QRCode from 'qrcodejs2';
 import { ref, reactive, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
 import { showToast } from 'vant';
 import { useRouter } from 'vue-router';
+import { getPetShareUrl } from "@/service/user";
 
 export default {
     setup() {
-        onMounted(() => {
-            // options 配置项方式使用
-            const qrcode = new QRCode("qrcode", {
-                // text: "https://juejin.cn/user/1582891999692093",
-                text: "http://192.168.3.200:9090/QRcode",
-                width: 128,
-                height: 128,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
+        onMounted(async () => {
+            if(document.getElementById('qrcode').childNodes.length){
+                return;
+            }
+            const shareURLRes = await getPetShareUrl();
+            console.log('shareURL===', shareURLRes,);
+            let errorMsg = '';
+            if (shareURLRes?.code == 1) {
+                //"{"code":1,"msg":"","data":{"errcode":0,"errmsg":"ok","url_link":"https://wxaurl.cn/fTAiVVjV6Eu"}}"
+                const { url_link } = shareURLRes?.data;
+                if (url_link) {
+                    // options 配置项方式使用
+                    const qrcode = new QRCode("qrcode", {
+                        // text: "https://juejin.cn/user/1582891999692093",
+                        text: url_link,
+                        width: 128,
+                        height: 128,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }else {
+                    errorMsg = JSON.stringify(shareURLRes?.msg || '二维码错误');
+                }
+            }else {
+                errorMsg = JSON.stringify(shareURLRes?.msg || '二维码错误');
+            }
+            errorMsg && alert(errorMsg || '二维码错误');
+        })
+
+        onBeforeUnmount(()=>{
+            //document.getElementById('qrcode').innerHTML = '';
         })
     },
     methods: {
@@ -290,4 +310,3 @@ button:active {
     }
 }
 </style>
-  
