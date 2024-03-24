@@ -3,21 +3,23 @@
         <div class="section_1 flex-col">
             <div class="box_1 flex-col">
                 <div class="section_3 flex-row justify-between">
-                    <img class="image_2" 
-                    style="opacity: 0"
-                    referrerpolicy="no-referrer" :src="require('../assets/images/qrback.png')"
-                        @click="onClickLeft" />
+                    <img class="image_2" style="opacity: 0" referrerpolicy="no-referrer"
+                        :src="require('../assets/images/qrback.png')" @click="onClickLeft" />
                     <span class="text_2">佣金明细</span>
                 </div>
             </div>
             <div class="box_2 flex-col">
-                <span class="text_3">今天</span>
                 <div class="list_1 flex-col">
-                    <div class="list-items_1 flex-row" v-for="(item, index) in loopData0" :key="index">
-                        <img class="image_3" referrerpolicy="no-referrer" :src="item.lanhuimage" />
-                        <span class="text_4" v-html="item.lanhutext0"></span>
-                        <span class="text_5" v-html="item.lanhutext1"></span>
-                        <span class="text_6" v-html="item.lanhutext2"></span>
+                    <div class="list-items_1 flex-row" v-for="(item, index) in loopData" :key="index">
+                        <img class="image_3" referrerpolicy="no-referrer" :src="IMG_ICON" />
+                        <div class="item_box">
+                            <span class="text_4" v-html="`订单号:${item.order_id}`"></span>
+                            <span class="text_5" :style="{ color: PAY_COLOR[item.pay_status] }"
+                                v-html="PAY_STATUS[item.pay_status]"></span>
+                            <span class="text_6" v-html="`金额:${getPrice(item.amount)}`"></span>
+                            <span class="text_7" v-html="item.updated_at"></span>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -25,37 +27,55 @@
     </div>
 </template>
 <script>
+import { reactive, onMounted, ref, toRefs, getCurrentInstance } from 'vue';
+import { commissionList } from "@/service/user";
 export default {
+    setup() {
+        const datab = getCurrentInstance();
+        let listData = [];
+        onMounted(async () => {
+            const res = await commissionList();
+            console.log('commissionList====', res, datab);
+            if (res?.code == 1) {
+                listData = [...res?.data]
+            } else {
+                alert(res?.msg || '推⼴佣⾦列表取失败!')
+            }
+        })
+        return {
+            listData,
+        }
+    },
     data() {
         return {
-            loopData0: [
+            IMG_ICON:
+                require("../assets/images/commissionPrice.png"),
+            PAY_COLOR: {
+                2: 'rgba(29,194,144,1)',
+                3: 'rgba(102,102,102,1)',
+            },
+            PAY_STATUS: {
+                2: '待支付',
+                3: '已支付',
+            },
+            loopData: [
                 {
-                    lanhuimage:
-                        require("../assets/images/commissionPrice.png"),
-                    lanhutext0: '+100.00元',
-                    lanhutext1: '成功',
-                    lanhutext2: '16:38',
+                    "id": "3",
+                    "order_id": "1710947414869282692", //订单号
+                    "amount": "20", //⾦额，单位分
+                    "updated_at": "2024-03-23 22:06:37"
                 },
                 {
-                    lanhuimage:
-                        require("../assets/images/commissionPrice.png"),
-                    lanhutext0: '+100.00元',
-                    lanhutext1: '成功',
-                    lanhutext2: '16:38',
+                    "id": "3",
+                    "order_id": "1710947414869282692", //订单号
+                    "amount": "20", //⾦额，单位分
+                    "updated_at": "2024-03-23 22:06:37"
                 },
                 {
-                    lanhuimage:
-                        require("../assets/images/commissionPrice.png"),
-                    lanhutext0: '+100.00元',
-                    lanhutext1: '成功',
-                    lanhutext2: '16:38',
-                },
-                {
-                    lanhuimage:
-                        require("../assets/images/commissionPrice.png"),
-                    lanhutext0: '+100.00元',
-                    lanhutext1: '成功',
-                    lanhutext2: '16:38',
+                    "id": "3",
+                    "order_id": "1710947414869282692", //订单号
+                    "amount": "20", //⾦额，单位分
+                    "updated_at": "2024-03-23 22:06:37"
                 },
             ],
             constants: {},
@@ -64,9 +84,54 @@ export default {
     methods: {
         onClickLeft: () => {
             history.back();
+        },
+        getPrice(price) {
+            return '￥' + (price / 10).toFixed(2);
         }
     },
 };
+// export default {
+//     data() {
+//         return {
+//             loopData0: [
+//                 {
+//                     lanhuimage:
+//                         require("../assets/images/commissionPrice.png"),
+//                     lanhutext0: '+100.00元',
+//                     lanhutext1: '成功',
+//                     lanhutext2: '16:38',
+//                 },
+//                 {
+//                     lanhuimage:
+//                         require("../assets/images/commissionPrice.png"),
+//                     lanhutext0: '+100.00元',
+//                     lanhutext1: '成功',
+//                     lanhutext2: '16:38',
+//                 },
+//                 {
+//                     lanhuimage:
+//                         require("../assets/images/commissionPrice.png"),
+//                     lanhutext0: '+100.00元',
+//                     lanhutext1: '成功',
+//                     lanhutext2: '16:38',
+//                 },
+//                 {
+//                     lanhuimage:
+//                         require("../assets/images/commissionPrice.png"),
+//                     lanhutext0: '+100.00元',
+//                     lanhutext1: '成功',
+//                     lanhutext2: '16:38',
+//                 },
+//             ],
+//             constants: {},
+//         };
+//     },
+//     methods: {
+//         onClickLeft: () => {
+//             history.back();
+//         }
+//     },
+// };
 </script>
 <style scoped lang="less">
 body * {
@@ -256,12 +321,22 @@ button:active {
                     box-shadow: 0px 7px 7px 4px rgba(180, 180, 180, 0.06);
                     background-color: rgba(255, 255, 255, 1);
                     border-radius: 14px;
+                    width: 702px;
                     margin-bottom: 18px;
-                    padding: 30px 40px 30px 24px;
+                    padding: 39px 40px 39px 42px;
+                    display: flex;
+
 
                     .image_3 {
                         width: 60px;
                         height: 60px;
+                        align-self: center;
+                        margin-right: 10px;
+                    }
+
+                    .item_box {
+                        flex-wrap: wrap;
+                        display: flex;
                     }
 
                     .text_4 {
@@ -273,19 +348,18 @@ button:active {
                         text-align: left;
                         white-space: nowrap;
                         line-height: 42px;
-                        margin: 9px 0 0 34px;
+                        flex-wrap: wrap;
                     }
 
                     .text_5 {
                         overflow-wrap: break-word;
-                        color: rgba(29, 194, 144, 1);
                         font-size: 30px;
                         font-family: PingFangSC-Medium;
                         font-weight: 500;
                         text-align: left;
                         white-space: nowrap;
                         line-height: 42px;
-                        margin: 9px 0 0 92px;
+                        text-align: left;
                     }
 
                     .text_6 {
@@ -297,7 +371,23 @@ button:active {
                         text-align: left;
                         white-space: nowrap;
                         line-height: 40px;
-                        margin: 10px 0 0 176px;
+                        margin-top: 1px;
+                        flex: 1;
+                        text-align: left;
+                    }
+
+                    .text_7 {
+                        overflow-wrap: break-word;
+                        color: rgba(144, 144, 144, 1);
+                        font-size: 28px;
+                        font-family: PingFang-SC-Medium;
+                        font-weight: normal;
+                        text-align: left;
+                        white-space: nowrap;
+                        line-height: 40px;
+                        margin-top: 1px;
+                        flex: 1;
+                        text-align: right;
                     }
                 }
             }
@@ -313,4 +403,3 @@ button:active {
     }
 }
 </style>
-  

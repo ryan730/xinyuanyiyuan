@@ -13,3 +13,16 @@ export function getPetShareUrl () {
 export function shareOrderList () {
     return axios.post(`/user/shareOrderList`);
 }
+export function commissionList () {
+    return axios.post(`user/commissionList`);
+}
+
+export function payouts () {
+    return axios.post(`user/payouts`);
+}
+export function commissionAmount () {
+    return axios.post(`user/commissionAmount`);
+}
+export function aaa () {
+    return axios.post(`user/commissionList`);
+}

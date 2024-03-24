@@ -14,7 +14,7 @@
                 <div class="box_1 flex-row justify-between">
                     <div class="text-group_1 flex-col">
                         <span class="text_3">当前佣金</span>
-                        <span class="text_4">182.76</span>
+                        <span class="text_4">{{ getPrice(amount) }}</span>
                     </div>
                     <div class="box_2 flex-row">
                         <div class="image-text_1 flex-row justify-between" @click="handleCashouut">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="box_3 flex-row">
-                    <div class="text-wrapper_1 flex-col">
+                    <div class="text-wrapper_1 flex-col" @click="handlePageout">
                         <span class="text_5">立即提现</span>
                     </div>
                 </div>
@@ -49,11 +49,21 @@ import { getRegister, getsms } from '@/service/login';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { debounce, getPxToRem } from "@/utils";
-
+import { payouts, commissionAmount } from '@/service/user';
 export default {
     setup() {
         const router = useRouter();
+        let amount = '';
+        onMounted(async ()=>{
+            const res = await commissionAmount();
+            if (res?.code == 1) {
+                amount = res?.data?.amount;
+            } else {
+                alert(res?.msg || '提现失败!')
+            }
+        })
         return {
+            amount,
             loopData: [
                 {
                     lanhuimage:
@@ -99,6 +109,9 @@ export default {
         };
     },
     methods: {
+        getPrice(price) {
+            return '￥' + (price / 10).toFixed(2);
+        },
         onClickLeft(){
             history.back();
         },
@@ -106,6 +119,14 @@ export default {
             this.$router.push({
                 name: 'cashList',
             })
+        },
+        async handlePageout(){
+            const res = await payouts();
+            if (res?.code == 1) {
+                alert('提现成功!')
+            } else {
+                alert(res?.msg || '提现失败!')
+            }
         }
     },
 };

@@ -15,7 +15,7 @@
                         :key="index">
                         <span class="text_4" v-html="`订单号:${item.id}`"></span>
                         <span class="text_5" :style="{ color: PAY_COLOR[item.pay_status] }" v-html="PAY_STATUS[item.pay_status]"></span>
-                        <span class="text_6" v-html="getPrice(item.amount)"></span>
+                        <span class="text_6" v-html="`金额:${getPrice(item.amount)}`"></span>
                         <span class="text_7" v-html="item.updated_at"></span>
                     </div>
                 </div>
@@ -24,14 +24,15 @@
     </div>
 </template>
 <script>
-import { reactive, onMounted, ref, toRefs } from 'vue';
+import { reactive, onMounted, ref, toRefs, getCurrentInstance } from 'vue';
 import { shareOrderList } from "@/service/user";
 export default {
     setup() {
+        const datab = getCurrentInstance(); 
         let listData = [];
         onMounted(async () => {
             const res = await shareOrderList();
-            console.log('promotionList====', res);
+            console.log('promotionList====', res, datab);
             if (res?.code == 1) {
                 listData = [...res?.data]
             }else {
