@@ -37,7 +37,7 @@ export default {
             const res = await commissionList();
             console.log('commissionList====', res, datab);
             if (res?.code == 1) {
-                listData = [...res?.data]
+                listData = res?.data || datab.data.loopData;
             } else {
                 alert(res?.msg || '推⼴佣⾦列表取失败!')
             }

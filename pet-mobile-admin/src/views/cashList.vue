@@ -26,16 +26,16 @@
 </template>
 <script>
 import { reactive, onMounted, ref, toRefs, getCurrentInstance } from 'vue';
-import { aaa } from "@/service/user";
+import { payoutList } from "@/service/user";
 export default {
   setup() {
     const datab = getCurrentInstance();
     let listData = [];
     onMounted(async () => {
-      const res = await aaa();
-      console.log('aaa====', res, datab);
+      const res = await payoutList();
+      console.log('payoutList====', res, datab);
       if (res?.code == 1) {
-        listData = [...res?.data]
+        listData = res?.data || datab.data.loopData;
       } else {
         alert(res?.msg || '推⼴提现列表失败!')
       }

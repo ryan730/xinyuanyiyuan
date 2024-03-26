@@ -23,6 +23,6 @@ export function payouts () {
 export function commissionAmount () {
     return axios.post(`user/commissionAmount`);
 }
-export function aaa () {
-    return axios.post(`user/commissionList`);
+export function payoutList () {
+    return axios.post(`user/payoutList`);
 }

@@ -168,15 +168,17 @@ async function getLazyWeixin() {
 }
 
 function getWXCode() {
-  const redirectUri = encodeURIComponent(window.location.href);
+  const redirectUri = encodeURIComponent(window.location.href);//'https://pets.xinyunyiyun.cn' || 
   let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
+  //let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=SCOPE&state=STATE&connect_redirect=1#wechat_redirect`;
   window.location.replace(newURL);
 }
 
 
 router.beforeEach(async (to, from, next) => {
+  // ryan+
   //http://h5.xinyunyiyun.cn/?code=041Oee0w3zxs223khQ3w3A4NoA0Oee01&state=aaa
-  const code = queryString("code") || '0615pNFa1WLW6H0gyrGa1iLkcR25pNFn'; //测试code
+  const code = queryString("code") //|| '0615pNFa1WLW6H0gyrGa1iLkcR25pNFn'; //测试code
 
 
   console.log("code==" + code, to, from, next);
