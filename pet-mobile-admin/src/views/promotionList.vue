@@ -30,12 +30,12 @@ import { shareOrderList } from "@/service/user";
 export default {
     setup() {
         const datab = getCurrentInstance(); 
-        let listData = [];
+        let listData = ref([]);
         onMounted(async () => {
             const res = await shareOrderList();
             console.log('promotionList====', res, datab);
             if (res?.code == 1) {
-                listData = res?.data || datab.data.loopData;
+                listData.value = res?.data //|| datab.data.loopData;
             }else {
                 alert(res?.msg || '推广订单获取失败!')
             }

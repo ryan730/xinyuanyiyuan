@@ -32,12 +32,12 @@ import { commissionList } from "@/service/user";
 export default {
     setup() {
         const datab = getCurrentInstance();
-        let listData = [];
+        let listData = ref([]);
         onMounted(async () => {
             const res = await commissionList();
             console.log('commissionList====', res, datab);
             if (res?.code == 1) {
-                listData = res?.data || datab.data.loopData;
+                listData.value = res?.data || datab.data.loopData;
             } else {
                 alert(res?.msg || '推⼴佣⾦列表取失败!')
             }
@@ -86,7 +86,7 @@ export default {
             history.back();
         },
         getPrice(price) {
-            return '￥' + (price / 10).toFixed(2);
+            return '￥' + (price / 100).toFixed(2);
         }
     },
 };

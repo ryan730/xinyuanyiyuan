@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./router";
+//import router from "./router/index_test";
+import router from "./router/index";
 import store from "./store";
 import {
     DatetimePicker,

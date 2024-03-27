@@ -1,5 +1,6 @@
 import { config } from "@/config";
 import { Toast } from 'vant';
+import { getcfg } from "@/service/wxShare";
 
 export function queryString(item) {
     var sValue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
@@ -110,8 +111,8 @@ export async function ASTPxToRem(arr, options) {
     var pxReplace = createPxReplace(options.rootValue, options.unitPrecision, options.minPixelValue);
 
     return await Promise.all(arr.map(async (ele) => {
-        if (!window.getPx2Rem || typeof (ele.data) != 'string' || ele.data.indexOf('style') == -1) { 
-           return Promise.resolve(ele.data);
+        if (!window.getPx2Rem || typeof (ele.data) != 'string' || ele.data.indexOf('style') == -1) {
+            return Promise.resolve(ele.data);
         }
         const transHtml = await posthtml()
             .use(function (tree) {
@@ -141,4 +142,82 @@ export async function ASTPxToRem(arr, options) {
         ele.data = transHtml.html;
         return Promise.resolve(ele.data);
     }));
+}
+
+const APPNAME = "乐嘟宠物测试分佣";
+const routers = {
+    "promotion": "我的推广",
+    "QRcode": "生成推广二维码",
+    "setting": "设置",
+    "commissionList": "佣金明细",
+    "promotionList": "推广订单",
+    "cashList": "提现记录",
+}
+export function shareAction(wx, to) {
+    if (!wx) {
+        return
+    }
+    // 微信分享自定义设置
+    getcfg(encodeURIComponent(location.href))    //访问接口获取以下需要的参数
+        .then((res) => {
+            wx.config({
+                debug: false,
+                appId: res.data.appId, // 必填，公众号的唯一标识
+                timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                nonceStr: res.data.noncestr, // 必填，生成签名的随机串
+                signature: res.data.signature,// 必填，签名
+                jsApiList: [
+                    "checkJsApi",
+                    'onMenuShareTimeline',                      //分享到微信朋友圈
+                    'onMenuShareAppMessage',                    //分享给微信朋友
+                    'onMenuShareQQ',                            //分享到QQ
+                    'onMenuShareQZone',                         //分享到QQ空间
+                    "updateAppMessageShareData",  //分享到微信及QQ（新接口）
+                    "updateTimelineShareData",//分享到朋友圈”及“分享到QQ空间（新接口）
+                    "onMenuShareWeibo",//分享到微博
+                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            });
+            wx.ready(function () {
+                let sharedParams = {            //分享参数(朋友圈除外)
+                    title: APPNAME, // 分享标题
+                    link: location.href, // 分享链接
+                    imgUrl: 'http://img.xinyunyiyun.cn/img/logo_1.png' // 分享图标
+                }
+                let sharedParamsmore = {            //分享参数(朋友圈除外)
+                    title: APPNAME, // 分享标题
+                    desc: APPNAME, // 分享描述
+                    link: location.href, // 分享链接
+                    imgUrl: 'http://img.xinyunyiyun.cn/img/logo_1.png' // 分享图标
+                }
+                sharedParamsmore.desc = routers[to.name] || APPNAME;
+                wx.updateAppMessageShareData(sharedParamsmore);
+                wx.updateTimelineShareData(sharedParams);
+                wx.onMenuShareWeibo(sharedParamsmore);
+                // else if (to.name == 'content' || to.name == 'test' || to.name == 'userInfo' || to.name == 'reportLite' || to.name == 'reportFull') {
+                //     console.log('12233', store)
+                //     let productId = store.state.productId;
+                //     let testId = store.state.testId;
+                //     let title = store.state.title;
+                //     sharedParams.title = title;
+                //     sharedParamsmore.title = title;
+                //     sharedParamsmore.link = 'http://h5.xinyunyiyun.cn/test';
+                //     getContent(testId).then(res => {
+                //         console.log('获取test分享数据', res);
+                //         let desc = res.data.sub_title;
+                //         let img = res.data.image.replace('2.png', '1.png');
+                //         let link = 'http://h5.xinyunyiyun.cn/test?isshare=true&' + 'testId=' + testId + "&productId=" + productId + "&title=" + title
+                //         sharedParamsmore.desc = desc;
+                //         sharedParams.link = link;
+                //         sharedParamsmore.link = link;
+                //         sharedParams.imgUrl = img;
+                //         sharedParamsmore.imgUrl = img;
+                //         console.log('test参数', sharedParamsmore, sharedParams);
+                //         wx.updateAppMessageShareData(sharedParamsmore);
+                //         wx.updateTimelineShareData(sharedParams);
+                //         wx.onMenuShareWeibo(sharedParamsmore);
+                //     })
+                // }
+
+            });
+        })
 }

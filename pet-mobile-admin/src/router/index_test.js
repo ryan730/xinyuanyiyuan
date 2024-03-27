@@ -21,42 +21,42 @@ const router = createRouter({
       name: "index",
       redirect: "/promotion"
     },
-    // {
-    //   path: "/login",
-    //   name: "login",
-    //   component: defineAsyncComponent(() => import(`../views/login.vue`)),
-    //   meta: {
-    //     title: "登录",
-    //   },
-    // },
-    // {
-    //   path: "/register",
-    //   name: "register",
-    //   component: defineAsyncComponent(() => import(`../views/register.vue`)),
-    //   meta: {
-    //     title: "注册",
-    //   },
-    // },
-    // {
-    //   path: "/userInfo",
-    //   name: "userInfo",
-    //   component: defineAsyncComponent(() =>
-    //     import(`../views/students/userInfo.vue`)
-    //   ),
-    //   meta: {
-    //     title: "基本信息",
-    //   },
-    // },
-    // {
-    //   path: "/test",
-    //   name: "test",
-    //   component: defineAsyncComponent(() =>
-    //     import(`../views/students/test.vue`)
-    //   ),
-    //   meta: {
-    //     title: "答题",
-    //   },
-    // },
+    {
+      path: "/login",
+      name: "login",
+      component: defineAsyncComponent(() => import(`../views/login.vue`)),
+      meta: {
+        title: "登录",
+      },
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: defineAsyncComponent(() => import(`../views/register.vue`)),
+      meta: {
+        title: "注册",
+      },
+    },
+    {
+      path: "/userInfo",
+      name: "userInfo",
+      component: defineAsyncComponent(() =>
+        import(`../views/students/userInfo.vue`)
+      ),
+      meta: {
+        title: "基本信息",
+      },
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: defineAsyncComponent(() =>
+        import(`../views/students/test.vue`)
+      ),
+      meta: {
+        title: "答题",
+      },
+    },
     {
       path: "/promotion",
       name: "promotion",
@@ -144,16 +144,16 @@ async function entryWeixin(code) {
       getWXCode();
     } else {
       const res = await userLogin(code);
-      console.log('res===', res);
-      // todo: 登陆失败是否提醒
+      console.log('res===',res);
+    // todo: 登陆失败是否提醒
       if (res?.code != 1) {
-        alert("waring:" + res?.msg);
+        alert("waring:"+res?.msg);
         ///document.write('<div style="width:100%;height:100%;display: flex;justify-content: center;align-items: center;"><h5>微信登陆失败!</h5></div>');
         ///return;
       }
       // 将token存储到localstorge
       window.localStorage.setItem('token', JSON.stringify({
-        token: res?.data?.token, //|| 'Bearer bzJZMXk2UGQ1bHhyOEJRZkZUYjN4WGJ2Nkd6d3x8MzY1fHxiOWVjYjBkMDMwYTFlMjg5NzdjZDdjNmQwMTQ2M2FkZQ==',
+        token: res?.data?.token || 'Bearer bzJZMXk2UGQ1bHhyOEJRZkZUYjN4WGJ2Nkd6d3x8MzY1fHxiOWVjYjBkMDMwYTFlMjg5NzdjZDdjNmQwMTQ2M2FkZQ==',
         time: new Date().getTime()
       }));
     }
@@ -168,8 +168,8 @@ async function getLazyWeixin() {
 }
 
 function getWXCode() {
-  //const redirectUri = encodeURIComponent('https://pets.xinyunyiyun.cn' || window.location.href);//'https://pets.xinyunyiyun.cn' || 
-  const redirectUri = encodeURIComponent(window.location.href);//'https://pets.xinyunyiyun.cn' || 
+  const redirectUri = encodeURIComponent('https://pets.xinyunyiyun.cn' || window.location.href);//'https://pets.xinyunyiyun.cn' || 
+  //const redirectUri = encodeURIComponent(window.location.href);//'https://pets.xinyunyiyun.cn' || 
   //let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
   let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa&connect_redirect=1#wechat_redirect`;
   //let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=SCOPE&state=STATE&connect_redirect=1#wechat_redirect`;
@@ -180,18 +180,29 @@ function getWXCode() {
 router.beforeEach(async (to, from, next) => {
   // ryan+
   //http://h5.xinyunyiyun.cn/?code=041Oee0w3zxs223khQ3w3A4NoA0Oee01&state=aaa
-  const code = queryString("code") //|| '0615pNFa1WLW6H0gyrGa1iLkcR25pNFn'; //测试code
+  const code = queryString("code") || '0615pNFa1WLW6H0gyrGa1iLkcR25pNFn'; //测试code
+
 
   console.log("code==" + code, to, from, next);
+  // if (to.name == 'test' || to.name == 'content' || to.name == 'reportLite' || to.name == 'reportFull') {
+  // 	document.title = store.state.title
+  // } else {
+  // 	document.title = 'maishiti'
+  // }
+
+  // if (to.name != "login" && to.name != "register") {
+  //   entryOtherPlatform(to, from, next);
+  // } else {
+
+  // }
 
   wx = await getLazyWeixin();
   entryWeixin(code);
 
   shareAction(wx,to)
 
-
   next();
-
+  // return;
 });
 
 export default router;

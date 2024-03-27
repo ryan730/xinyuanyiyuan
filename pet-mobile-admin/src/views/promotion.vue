@@ -105,9 +105,10 @@ export default {
                         require('../assets/images/promt-6.png'),
                     lanhutext0: '设置',
                     click: () => {
-                        router.push({
-                            name: 'setting',
-                        })
+                        // router.push({
+                        //     name: 'setting',
+                        // })
+                        alert('暂未开放，敬请期待');
                     }
                 },
             ],
