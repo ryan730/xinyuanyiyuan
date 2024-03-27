@@ -55,11 +55,16 @@ export default {
         const router = useRouter();
         let amount = '';
         onMounted(async ()=>{
+            let storageData = localStorage.getItem("token");
+            const { token, time } = JSON.parse(storageData) || {};
+            if(!token){
+                return;
+            }
             const res = await commissionAmount();
             if (res?.code == 1) {
                 amount = res?.data?.amount;
             } else {
-                alert(res?.msg || '提现失败!')
+                alert(res?.msg || '获取失败!')
             }
         })
         return {

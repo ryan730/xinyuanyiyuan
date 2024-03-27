@@ -3,29 +3,28 @@
     <div class="group_1 flex-col">
       <div class="box_1 flex-col">
         <div class="section_2 flex-row justify-between">
-          <img class="image_2" referrerpolicy="no-referrer" style="opacity: 0"
-            :src="require('../assets/images/qrback.png')" @click="onClickLeft" />
+          <img class="image_2" referrerpolicy="no-referrer" style="opacity: 0" :src="require('../assets/images/qrback.png')" @click="onClickLeft" />
           <span class="text_2">提现记录</span>
         </div>
       </div>
       <div class="box_2 flex-col">
-        <span class="text_3">今天</span>
         <div class="list_1 flex-col">
-          <div class="list-items_1 flex-row" v-for="(item, index) in loopData" :key="index">
+          <div class="list-items_1 flex-row" v-for="(item, index) in listData" :key="index">
             <img class="image_3" referrerpolicy="no-referrer" :src="IMG_ICON" />
             <div class="item_box">
               <span class="text_4" v-html="`订单号:${item.id}`"></span>
               <span class="text_6" v-html="`金额:${getPrice(item.number)}`"></span>
               <span class="text_7" v-html="item.updated_at"></span>
             </div>
-          </div> 
+          </div>
+          <span class="text_2" v-if="!listData?.length">你还没有记录!</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { reactive, onMounted, ref, toRefs, getCurrentInstance } from 'vue';
+import { reactive, onMounted, ref, toRefs, getCurrentInstance } from "vue";
 import { payoutList } from "@/service/user";
 export default {
   setup() {
@@ -33,26 +32,26 @@ export default {
     let listData = [];
     onMounted(async () => {
       const res = await payoutList();
-      console.log('payoutList====', res, datab);
+      console.log("payoutList====", res, datab);
       if (res?.code == 1) {
         listData = res?.data || datab.data.loopData;
       } else {
-        alert(res?.msg || '推⼴提现列表失败!')
+        alert(res?.msg || "推⼴提现列表失败!");
       }
-    })
+    });
     return {
       listData,
-      IMG_ICON: require("../assets/images/commissionPrice.png")
-    }
+      IMG_ICON: require("../assets/images/commissionPrice.png"),
+    };
   },
   data() {
     return {
       loopData: [
         {
-          "id": "1",
-          "number": "50", //提现⾦额 单位分
-          "updated_at": "2024-03-23 23:30:45"
-        }
+          id: "1",
+          number: "50", //提现⾦额 单位分
+          updated_at: "2024-03-23 23:30:45",
+        },
       ],
       // loopData0: [
       //   {
@@ -80,9 +79,7 @@ export default {
       //     lanhutext2: '16:38',
       //   },
       // ],
-      constants: {
-        
-      },
+      constants: {},
     };
   },
   methods: {
@@ -90,8 +87,8 @@ export default {
       history.back();
     },
     getPrice(price) {
-      return '￥' + (price / 10).toFixed(2);
-    }
+      return "￥" + (price / 10).toFixed(2);
+    },
   },
 };
 </script>
@@ -102,8 +99,7 @@ body * {
 }
 
 body {
-  font-family: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma,
-    Arial, PingFang SC-Light, Microsoft YaHei;
+  font-family: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma, Arial, PingFang SC-Light, Microsoft YaHei;
 }
 
 input {
@@ -128,7 +124,7 @@ button:active {
   opacity: 1;
 }
 
-[class*='van-']::after {
+[class*="van-"]::after {
   border-bottom: 0;
 }
 
@@ -262,6 +258,18 @@ button:active {
 
     .box_2 {
       padding: 17px 24px 26px 24px;
+      .text_2 {
+        overflow-wrap: break-word;
+        color: gray;
+        font-size: 30px;
+        font-family: PingFangSC-Medium;
+        font-weight: 500;
+        text-align: left;
+        white-space: nowrap;
+        justify-content: center;
+        margin-top: 20px;
+        display: flex;
+      }
 
       .text_3 {
         overflow-wrap: break-word;
@@ -287,7 +295,6 @@ button:active {
           margin-bottom: 18px;
           padding: 39px 40px 39px 42px;
           display: flex;
-
 
           .image_3 {
             width: 60px;

@@ -11,13 +11,14 @@
             <div class="block_3 flex-col">
                 <!-- <span class="text_3">今天</span> -->
                 <div class="list_1 flex-col">
-                    <div class="text-wrapper_1 flex-row justify-between" v-for="(item, index) in loopData"
+                    <div class="text-wrapper_1 flex-row justify-between" v-for="(item, index) in listData"
                         :key="index">
                         <span class="text_4" v-html="`订单号:${item.id}`"></span>
                         <span class="text_5" :style="{ color: PAY_COLOR[item.pay_status] }" v-html="PAY_STATUS[item.pay_status]"></span>
                         <span class="text_6" v-html="`金额:${getPrice(item.amount)}`"></span>
                         <span class="text_7" v-html="item.updated_at"></span>
                     </div>
+                    <span class="text_2" v-if="!listData?.length">你还没有订单!!</span>
                 </div>
             </div>
         </div>
@@ -256,6 +257,20 @@ button:active {
 
         .block_3 {
             padding: 17px 24px 26px 24px;
+
+            .text_2 {
+                overflow-wrap: break-word;
+                color: gray;
+                font-size: 30px;
+                font-family: PingFangSC-Medium;
+                font-weight: 500;
+                text-align: left;
+                white-space: nowrap;
+                justify-content: center;
+                margin-top:20px;
+                display: flex;
+            }
+
 
             .text_3 {
                 overflow-wrap: break-word;

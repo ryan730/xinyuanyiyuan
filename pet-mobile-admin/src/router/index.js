@@ -153,7 +153,7 @@ async function entryWeixin(code) {
       }
       // 将token存储到localstorge
       window.localStorage.setItem('token', JSON.stringify({
-        token: res?.data?.token || 'Bearer bzJZMXk2UGQ1bHhyOEJRZkZUYjN4WGJ2Nkd6d3x8MzY1fHxiOWVjYjBkMDMwYTFlMjg5NzdjZDdjNmQwMTQ2M2FkZQ==',
+        token: res?.data?.token, //|| 'Bearer bzJZMXk2UGQ1bHhyOEJRZkZUYjN4WGJ2Nkd6d3x8MzY1fHxiOWVjYjBkMDMwYTFlMjg5NzdjZDdjNmQwMTQ2M2FkZQ==',
         time: new Date().getTime()
       }));
     }
@@ -168,8 +168,10 @@ async function getLazyWeixin() {
 }
 
 function getWXCode() {
+  //const redirectUri = encodeURIComponent('https://pets.xinyunyiyun.cn' || window.location.href);//'https://pets.xinyunyiyun.cn' || 
   const redirectUri = encodeURIComponent(window.location.href);//'https://pets.xinyunyiyun.cn' || 
-  let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
+  //let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
+  let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa&connect_redirect=1#wechat_redirect`;
   //let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=SCOPE&state=STATE&connect_redirect=1#wechat_redirect`;
   window.location.replace(newURL);
 }
@@ -197,12 +199,7 @@ router.beforeEach(async (to, from, next) => {
   wx = await getLazyWeixin();
   entryWeixin(code);
   next();
-  return;
-
-
-
-  // entryOtherPlatform(to, from, next);
-  // next();
+  // return;
 });
 
 export default router;

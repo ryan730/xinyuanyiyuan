@@ -10,7 +10,7 @@
             </div>
             <div class="box_2 flex-col">
                 <div class="list_1 flex-col">
-                    <div class="list-items_1 flex-row" v-for="(item, index) in loopData" :key="index">
+                    <div class="list-items_1 flex-row" v-for="(item, index) in listData" :key="index">
                         <img class="image_3" referrerpolicy="no-referrer" :src="IMG_ICON" />
                         <div class="item_box">
                             <span class="text_4" v-html="`订单号:${item.order_id}`"></span>
@@ -19,8 +19,8 @@
                             <span class="text_6" v-html="`金额:${getPrice(item.amount)}`"></span>
                             <span class="text_7" v-html="item.updated_at"></span>
                         </div>
-
                     </div>
+                    <span class="text_2" v-if="!listData?.length">你还没有明细!</span>
                 </div>
             </div>
         </div>
@@ -300,6 +300,19 @@ button:active {
 
         .box_2 {
             padding: 17px 24px 26px 24px;
+
+            .text_2 {
+                overflow-wrap: break-word;
+                color: gray;
+                font-size: 30px;
+                font-family: PingFangSC-Medium;
+                font-weight: 500;
+                text-align: left;
+                white-space: nowrap;
+                justify-content: center;
+                margin-top:20px;
+                display: flex;
+            }
 
             .text_3 {
                 overflow-wrap: break-word;
