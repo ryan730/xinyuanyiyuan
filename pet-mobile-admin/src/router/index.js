@@ -147,7 +147,7 @@ async function entryWeixin(code) {
       console.log('res===',res);
     // todo: 登陆失败是否提醒
       if (res?.code != 1) {
-        alert(res?.msg);
+        alert("waring:"+res?.msg);
         ///document.write('<div style="width:100%;height:100%;display: flex;justify-content: center;align-items: center;"><h5>微信登陆失败!</h5></div>');
         ///return;
       }
