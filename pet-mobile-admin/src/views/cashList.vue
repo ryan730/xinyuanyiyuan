@@ -12,7 +12,8 @@
           <div class="list-items_1 flex-row" v-for="(item, index) in listData" :key="index">
             <img class="image_3" referrerpolicy="no-referrer" :src="IMG_ICON" />
             <div class="item_box">
-              <span class="text_4" v-html="`订单号:${item.id}`"></span>
+              <span class="text_4" v-html="`流水号:${item.id}`"></span>
+              <span class="text_5" :style="{ color: COLOR[item.status] }" v-html="STATUS[item.status]"></span>
               <span class="text_6" v-html="`金额:${getPrice(item.number)}`"></span>
               <span class="text_7" v-html="item.updated_at"></span>
             </div>
@@ -46,10 +47,21 @@ export default {
   },
   data() {
     return {
+      COLOR: {
+        1: "rgba(255,0,0,0.5)",
+        2: "rgba(29,194,144,1)",
+        3: "rgba(102,102,102,1)",
+      },
+      STATUS: {
+        1: '已提交',
+        2: '待审核',
+        3: '提现成功',
+      },
       loopData: [
         {
           id: "1",
           number: "50", //提现⾦额 单位分
+          status:"1",
           updated_at: "2024-03-23 23:30:45",
         },
       ],
@@ -318,7 +330,7 @@ button:active {
             white-space: nowrap;
             line-height: 42px;
             flex-wrap: wrap;
-            flex: 100%;
+            flex: 60%;
           }
 
           .text_5 {

@@ -129,7 +129,7 @@ function getQueryString(name) {
   return null;
 }
 
-async function entryWeixin(code) {
+async function entryWeixin(code, to, next) {
   let storageData = localStorage.getItem("token") || "";
   if (storageData) { // 是否有缓存
     const { token, time } = JSON.parse(storageData);
@@ -150,12 +150,17 @@ async function entryWeixin(code) {
         alert("waring:" + res?.msg);
         ///document.write('<div style="width:100%;height:100%;display: flex;justify-content: center;align-items: center;"><h5>微信登陆失败!</h5></div>');
         ///return;
+      } else {
+        // 将token存储到localstorge
+        window.localStorage.setItem('token', JSON.stringify({
+          token: res?.data?.token, //|| 'Bearer bzJZMXk2UGQ1bHhyOEJRZkZUYjN4WGJ2Nkd6d3x8MzY1fHxiOWVjYjBkMDMwYTFlMjg5NzdjZDdjNmQwMTQ2M2FkZQ==',
+          time: new Date().getTime()
+        }));
+        next({
+          path: '/promotion'
+        })
+
       }
-      // 将token存储到localstorge
-      window.localStorage.setItem('token', JSON.stringify({
-        token: res?.data?.token, //|| 'Bearer bzJZMXk2UGQ1bHhyOEJRZkZUYjN4WGJ2Nkd6d3x8MzY1fHxiOWVjYjBkMDMwYTFlMjg5NzdjZDdjNmQwMTQ2M2FkZQ==',
-        time: new Date().getTime()
-      }));
     }
   }
 }
@@ -185,10 +190,9 @@ router.beforeEach(async (to, from, next) => {
   console.log("code==" + code, to, from, next);
 
   wx = await getLazyWeixin();
-  entryWeixin(code);
+  entryWeixin(code,to,next);
 
-  shareAction(wx,to)
-
+  shareAction(wx, to)
 
   next();
 
