@@ -176,7 +176,7 @@ function getWXCode() {
   const redirectUri = encodeURIComponent('https://pets.xinyunyiyun.cn' || window.location.href);//'https://pets.xinyunyiyun.cn' || 
   //const redirectUri = encodeURIComponent(window.location.href);//'https://pets.xinyunyiyun.cn' || 
   //let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa#wechat_redirect`;
-  let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=aaa&connect_redirect=1#wechat_redirect`;
+  let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_userinfo&state=${new Date().getTime()}&connect_redirect=1#wechat_redirect`;
   //let newURL = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9ee605c9b206596c&redirect_uri=${redirectUri}&response_type=code&scope=SCOPE&state=STATE&connect_redirect=1#wechat_redirect`;
   window.location.replace(newURL);
 }
