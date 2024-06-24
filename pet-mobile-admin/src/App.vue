@@ -25,7 +25,7 @@ const MyDynamicComponent = defineComponent({
   setup(props) {
     const router = useRouter();
     const show = ref(false);
-    ///console.log("opopopopopopop----", toRaw(router).currentRoute.value,  router);
+    ///console.log("setup----", toRaw(router).currentRoute.value,  router);
     const handler = () => {
       router.push({
         name: "promotion",
